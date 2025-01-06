@@ -11,6 +11,13 @@ Here is a small demo of the [ `example` app](https://pub.dev/packages/feature_di
 
 To use this package, follow the [installing guide](https://pub.dev/packages/feature_discovery#-installing-tab-).
 
+## Init
+
+```dart
+  WidgetsFlutterBinding.ensureInitialized();
+  await FeatureDiscovery.initializeSecurity('example_key_length_16');
+```
+
 ## Usage
 
 ### `FeatureDiscovery` 
