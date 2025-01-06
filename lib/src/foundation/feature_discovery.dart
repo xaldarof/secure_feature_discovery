@@ -1,4 +1,6 @@
+import 'package:encrypt_shared_preferences/provider.dart';
 import 'package:feature_discovery/src/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'persistence_provider.dart';
@@ -69,6 +71,23 @@ class FeatureDiscovery extends StatelessWidget {
   /// This means that you cannot use this to check if a feature overlay is being displayed.
   static String? currentFeatureIdOf(BuildContext context) =>
       _blocOf(context).activeFeatureId;
+
+  /// This returns the feature id of the current feature discovery step, i.e.
+  /// of the [DescribedFeatureOverlay] that is currently supposed to be shown, or `null`.
+  ///
+  /// Note that this will also return the feature id of the current step of the steps
+  /// you passed to [discoverFeatures] even when there is no [DescribedFeatureOverlay]
+  /// in the tree to display the overlay.
+  /// This means that you cannot use this to check if a feature overlay is being displayed.
+  static Future<bool> initializeSecurity(String key) async {
+    try {
+      await EncryptedSharedPreferences.initialize(key);
+      return true;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return false;
+    }
+  }
 
   final Widget child;
 

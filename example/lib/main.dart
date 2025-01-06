@@ -10,11 +10,12 @@ const String feature1 = 'feature1',
     feature6 = 'feature6',
     feature7 = 'feature7';
 
-void main() {
+void main() async {
   // You can increase the timeDilation value if you want to see
   // the animations more slowly.
   timeDilation = 1.0;
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await FeatureDiscovery.initializeSecurity('1111111111111111');
   runApp(MyApp());
 }
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         // Required: this widget works like an inherited widget.
         home: const FeatureDiscovery.withProvider(
-          persistenceProvider: NoPersistenceProvider(),
+          persistenceProvider: SharedPreferencesProvider(),
           child: MyHomePage(title: 'Flutter Feature Discovery'),
         ),
       );

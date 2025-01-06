@@ -1,4 +1,5 @@
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:encrypt_shared_preferences/provider.dart';
 
 /// Declares a contract to remember which Feature Discoveries were already viewed by
 /// the user, and to inquire about such past views.
@@ -39,35 +40,35 @@ class SharedPreferencesProvider implements PersistenceProvider {
 
   @override
   Future<bool> hasCompletedStep(String featureId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final hasCompleted = await prefs.getBool(_normalizeFeatureId(featureId));
+    final prefs = await EncryptedSharedPreferences.getInstance();
+    final hasCompleted = await prefs.getBoolean(_normalizeFeatureId(featureId));
     return hasCompleted == true;
   }
 
   @override
   Future<Set<String?>> completedSteps(Iterable<String?>? featuresIds) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await EncryptedSharedPreferences.getInstance();
     return featuresIds!
         .where((featureId) =>
-            prefs.getBool(_normalizeFeatureId(featureId)) == true)
+            prefs.getBoolean(_normalizeFeatureId(featureId)) == true)
         .toSet();
   }
 
   @override
   Future<void> completeStep(String? featureId) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_normalizeFeatureId(featureId), true);
+    final prefs = await EncryptedSharedPreferences.getInstance();
+    await prefs.setBoolean(_normalizeFeatureId(featureId), true);
   }
 
   @override
   Future<void> clearStep(String featureId) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await EncryptedSharedPreferences.getInstance();
     await prefs.remove(_normalizeFeatureId(featureId));
   }
 
   @override
   Future<void> clearSteps(Iterable<String> featuresIds) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await EncryptedSharedPreferences.getInstance();
 
     final mapResult = featuresIds.map<Future>((featureId) async =>
         await prefs.remove(_normalizeFeatureId(featureId)));
